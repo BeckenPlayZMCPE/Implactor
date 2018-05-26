@@ -363,13 +363,13 @@ class MainIR extends PluginBase implements Listener {
                                             $sender->sendMessage("§e/sethub §9- §fSet the main hub location point!");
                                             $sender->sendMessage("§e/fly §9- §fTurn on/off the fly ability!");
                                             $sender->sendMessage("§e/kill §9- §fKill yourself!");
-                                            $sender->sendMessage("§e/wild §9- §fTeleport to the wild spot!");
+                                            $sender->sendMessage("§e/wild §9- §fTeleport to the random wild zone!");
                                             $sender->sendMessage("§e/clearitem §9- §fClear your items from your inventory!");
                                             $sender->sendMessage("§e/cleararmor §9- §fClear your armor from your body!");
                                             $sender->sendMessage("§e/clearall §9- §fClear all items/armors from your inventory and body!");
                                             $sender->sendMessage("§e/nick §9- §fSet your nickname or default!");
 					     $sender->sendMessage("§e/freeze §9- §bFreeze §fyourself or others will make you frozen!");
-					     $sender->sendMessage("§e/vanish §9- §6Vanish §fyourself or others woll make you invisible!");
+					     $sender->sendMessage("§e/vanish §9- §6Vanish §fyourself or others will make you invisible!");
                                             return true;
                                            }
                                          }                                             
@@ -416,13 +416,13 @@ class MainIR extends PluginBase implements Listener {
                     $player->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_INVISIBLE, true);
                     $player->setNameTagVisible(false);
                     $player->sendMessage("§bYou are now §fvanished!");
-                    $sender->sendMessage("§eYou have §fvanished " . IR::AQUA . $player->getName() . "");
+                    $sender->sendMessage("§eYou have successfully §fvanished " . IR::GREEN . $player->getName() . "");
                 }elseif(in_array($player->getName(), $this->vanish)){
                     unset($this->vanish[array_search($player->getName(), $this->vanish)]);
                     $player->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_INVISIBLE, false);
                     $player->setNameTagVisible(true);
                     $player->sendMessage("§bYou are no longer §fvanished!");
-                    $sender->sendMessage("§eYou have §fun-vanished " . IR::AQUA . $player->getName() . "");
+                    $sender->sendMessage("§eYou have successfully §fun-vanished " . IR::GRREN . $player->getName() . "");
                   }
                }else{
                 $sender->sendMessage("§cPlayer not found in server");
