@@ -410,7 +410,7 @@ class MainIR extends PluginBase implements Listener {
                     $this->vanish[] = $player->getName();
                     $player->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_INVISIBLE, true);
                     $player->setNameTagVisible(false);
-                    $player->sendMessage(§bYou are now §fvanished!");
+                    $player->sendMessage("§bYou are now §fvanished!");
                     $sender->sendMessage("§eYou have §fvanished " . IR::AQUA . $player->getName() . "");
                 }elseif(in_array($player->getName(), $this->vanish)){
                     unset($this->vanish[array_search($player->getName(), $this->vanish)]);
