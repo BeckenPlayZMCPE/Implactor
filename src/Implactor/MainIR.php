@@ -179,8 +179,7 @@ class MainIR extends PluginBase implements Listener {
                       if(strtolower($command->getName()) == "hub") {
                       	if($sender instanceof Player){
                        if($sender->hasPermission("implactor.hub")) {
-                          $pos = $sender->teleport($this->getServer()->getDefaultLevel()->getSafeSpawn());
-                          $sender->teleport($pos);
+                          $sender->getDefaultLevel()->getSafeSpawn());
                           $sender->addTitle("§7§l[§eHUB§7]§r", "§aReturning§f...");
                           $sender->sendMessage(IR::GRAY. "-------" .IR::WHITE. "\n Returning to hub..." .IR::GRAY. "\n-------");
                           return true;
