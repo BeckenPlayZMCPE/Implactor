@@ -48,6 +48,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\level\Location;
 use pocketmine\level\Position;
 use pocketmine\entity\Entity;
+use pocketmine\entity\EffectInstance;
 use pocketmine\math\Vector3;
 use pocketmine\level\particle\DestroyBlockParticle as FrostBloodParticle;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -362,7 +363,8 @@ class MainIR extends PluginBase implements Listener {
                                             $sender->sendMessage("§e/cleararmor §9- §fClear your armor from your body!");
                                             $sender->sendMessage("§e/clearall §9- §fClear all items/armors from your inventory and body!");
                                             $sender->sendMessage("§e/nick §9- §fSet your nickname or default!");
-					     $sender->sendMessage("§e/freeze §9- §bFreeze §fyourself or others will make you not move!");
+					     $sender->sendMessage("§e/freeze §9- §bFreeze §fyourself or others will make you frozen!");
+					     $sender->sendMessage("§e/vanish §9- §6Vanish §fyourself or others woll make you invisible!");
                                             return true;
                                            }
                                          }                                             
@@ -379,13 +381,58 @@ class MainIR extends PluginBase implements Listener {
                                            }
                                           }
                                       
+			                  if(strtolower($command->getName()) === "vanish"){
+                                         if(!$sender instanceof Player){
+                                       $sender->sendMessage("Please use Implactor command in-game server!");
+                                       return false;
+                                    }
+                                      if(!$sender->hasPermission("implactor.vanish")){
+                                      $sender->sendMessage("§cYou have no permission allowed to use §bFreeze §ccommand§e!");
+                                      return false;
+                                  }
+                                    if(empty($args[0])){
+                           if(!in_array($sender->getName(), $this->vanish)){
+                    $this->vanish[] = $sender->getName();
+                    $sender->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_INVISIBLE, true);
+                    $sender->setNameTagVisible(false);
+                    $sender->sendMessage("§beYou are now §fvanished!");
+                   }elseif(in_array($sender->getName(), $this->vanish)){
+                    unset($this->vanish[array_search($sender->getName(), $this->vanish)]);
+                    $sender->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_INVISIBLE, false);
+                    $sender->setNameTagVisible(true);
+                    $sender->sendMessage("§beYou are no longer §fvanished!");
+                }
+                return false;
+               }
+                if($this->getServer()->getPlayer($args[0])){
+                $player = $this->getServer()->getPlayer($args[0]);
+                if(!in_array($player->getName(), $this->vanish)){
+                    $this->vanish[] = $player->getName();
+                    $player->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_INVISIBLE, true);
+                    $player->setNameTagVisible(false);
+                    $player->sendMessage("§bYou are now §fvanished!");
+                    $sender->sendMessage("§eYou have §fvanished " . IR::AQUA . $player->getName() . "");
+                }elseif(in_array($player->getName(), $this->vanish)){
+                    unset($this->vanish[array_search($player->getName(), $this->vanish)]);
+                    $player->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_INVISIBLE, false);
+                    $player->setNameTagVisible(true);
+                    $player->sendMessage("§bYou are no longer §fvanished!");
+                    $sender->sendMessage("§eYou have §fun-vanished " . IR::AQUA . $player->getName() . "");
+                  }
+               }else{
+                $sender->sendMessage("§cPlayer not found in server");
+                return false;
+              }
+              return true;
+          }
+			      
 			                    if(strtolower($command->getName()) === "freeze"){
                                            if(!$sender instanceof Player){
                                           $sender->sendMessage("§cPlease use Implactor command in-game server!");
                                           return false;
                                         }
                                           if(!$sender->hasPermission("implactor.freeze")){
-                                           $sender->sendMessage("§cYou don't have permission allowed to use §bFreeze §ccommand§e!");
+                                           $sender->sendMessage("§cYou have no permission allowed to use §bFreeze §ccommand§e!");
                                            return false;
                                          }
                                           if(empty($args[0])){

@@ -62,6 +62,9 @@ commands:
     freeze:
          description: Freeze player or yourself!
          permission: implactor.freeze
+    vanish:
+        description: Vanish yourself or other players!
+        permission: implactor.vanish
 permissions:
     implactor.*:
      default: op
@@ -114,6 +117,9 @@ permissions:
     implactor.anti:
      description: "Have access with anti advertising/swearing to warn players"
      default: true
+    implactor.vanish:
+     description: "Allow OP staff members to vanish their player characters"
+     default: op
     implactor.freeze:
      description: "Allow OP staff members to freeze them"
      default: op
