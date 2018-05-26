@@ -66,6 +66,11 @@ use Implactor\npc\DeathHumanClearEntityTask;
 
 class MainIR extends PluginBase implements Listener {
 	
+   /** @var array $freeze */
+    private $freeze = [];
+   /** @var array $vanish */
+    private $vanish = [];
+	
   public function onLoad(): void{
    $this->getLogger()->info(IR::AQUA . "Loading all resources and codes on Implactor plugin...");
   }
@@ -436,7 +441,7 @@ class MainIR extends PluginBase implements Listener {
                                            return false;
                                          }
                                           if(empty($args[0])){
-                                          $sender->sendMessage("§8§l(§6!§8)§r §Command Usage§e:§r §b/freeze <player>");
+                                          $sender->sendMessage("§8§l(§6!§8)§r §cCommand Usage§e:§r §b/freeze <player>");
                                           return false;
                                          }
                                     if($this->getServer()->getPlayer($args[0])){
