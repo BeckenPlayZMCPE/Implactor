@@ -179,7 +179,7 @@ class MainIR extends PluginBase implements Listener {
                       if(strtolower($command->getName()) == "hub") {
                       	if($sender instanceof Player){
                        if($sender->hasPermission("implactor.hub")) {
-                          $sender->getDefaultLevel()->getSafeSpawn();
+                          $sender->teleport($this->getServer()->getDefaultLevel()->getSafeSpawn());
                           $sender->addTitle("§7§l[§eHUB§7]§r", "§aReturning§f...");
                           $sender->sendMessage(IR::GRAY. "-------" .IR::WHITE. "\n Returning to hub..." .IR::GRAY. "\n-------");
                           return true;
@@ -190,11 +190,11 @@ class MainIR extends PluginBase implements Listener {
                        if(strtolower($command->getName()) == "sethub") {
                        	if($sender->hasPermission("implactor.sethub")) {                       	   
                        	  $sender->getLevel()->setSpawnLocation($sender);
-                             $sender->getServer()->setDefaultLevel($sender->getLevel());
                              $sender->sendMessage(IR::YELLOW . "You have successfully set a main hub!");
                              return true;
                          }
                       }
+                    
                         
                         if(strtolower($command->getName()) == "fly") {
                         	if($sender instanceof Player){
