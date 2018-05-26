@@ -43,6 +43,7 @@ use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\event\player\PlayerMoveEvent;
+use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\level\Location;
@@ -92,6 +93,13 @@ class MainIR extends PluginBase implements Listener {
          public function onPlayerLogin(PlayerLoginEvent $ev): void{
           $ev->getPlayer()->teleport($this->getServer()->getDefaultLevel()->getSafeSpawn());
 	}
+	
+	public function onPlayerPreLogin(PlayerPreLoginEvent $ev) : void{
+        if(!$this->getServer()->isWhitelisted($ev->getPlayer()->getName())){
+            $ev->setKickMessage("§l§7[ §cNOTICR §7]\n §eThis server is currently on §fmaintenence §emode!");
+            $ev->setCancelled(true);
+        }
+    }
 	
 	     public function onPlayerJoin(PlayerJoinEvent $ev): void{
              $player = $ev->getPlayer();
