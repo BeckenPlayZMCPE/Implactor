@@ -52,6 +52,7 @@ use pocketmine\entity\Entity;
 use pocketmine\entity\EffectInstance;
 use pocketmine\math\Vector3;
 use pocketmine\level\particle\DestroyBlockParticle as FrostBloodParticle;
+use pocketmine\block\Block;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\level\sound\EndermanTeleportSound;
