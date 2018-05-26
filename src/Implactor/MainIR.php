@@ -108,7 +108,7 @@ class MainIR extends PluginBase implements Listener {
               }
 	
            public function onMove(PlayerMoveEvent $ev) : void{
-            if(in_array($ev->getPlayer()->getName(), $this->freeze)) $event->setCancelled(true);
+            if(in_array($ev->getPlayer()->getName(), $this->freeze)) $ev->setCancelled(true);
          }    
 	
          public function onPlayerQuit(PlayerQuitEvent $ev): void{
@@ -400,12 +400,12 @@ class MainIR extends PluginBase implements Listener {
                     $this->vanish[] = $sender->getName();
                     $sender->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_INVISIBLE, true);
                     $sender->setNameTagVisible(false);
-                    $sender->sendMessage("§beYou are now §fvanished!");
+                    $sender->sendMessage("§bYou are now §fvanished!");
                    }elseif(in_array($sender->getName(), $this->vanish)){
                     unset($this->vanish[array_search($sender->getName(), $this->vanish)]);
                     $sender->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_INVISIBLE, false);
                     $sender->setNameTagVisible(true);
-                    $sender->sendMessage("§beYou are no longer §fvanished!");
+                    $sender->sendMessage("§bYou are no longer §fvanished!");
                 }
                 return false;
                }
@@ -448,11 +448,11 @@ class MainIR extends PluginBase implements Listener {
                                     $player = $this->getServer()->getPlayer($args[0]);
                                   if(!in_array($player->getName(), $this->freeze)){
                                   $this->freeze[] = $player->getName();
-                                  $player->sendMessage(IR::AQUA . "You have been frozen player!");
+                                  $player->sendMessage(IR::AQUA . "You are now frozen player!");
                                   $sender->sendMessage(IR::AQUA . "You have frozen " . $player->getName());
                                  }elseif(in_array($player->getName(), $this->freeze)){
                                    unset($this->freeze[array_search($player->getName(), $this->freeze)]);
-                                   $player->sendMessage(IR::AQUA . "You have been unfrozen player!");
+                                   $player->sendMessage(IR::AQUA . "You are no longer frozen player!");
                                    $sender->sendMessage(IR::AQUA . "You have unfrozen " . $player->getName());
                                   }
                                }else{
