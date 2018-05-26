@@ -305,8 +305,8 @@ class MainIR extends PluginBase implements Listener {
                                     if(strtolower($command->getName()) == "ping") {
                                     	if($sender instanceof Player){
                                      if($sender->hasPermission("implactor.ping")){
-                                     $sender->sendMessage($sender->getPlayer()->getName(). "§aping status§c:");
-                                     $sender->sendMessage("§b" . $sender->getPing() . "§fms §6on your connection§c!");
+                                     $sender->sendMessage($sender->getPlayer()->getName(). "§a's ping status§e,");
+                                     $sender->sendMessage("§b" . $sender->getPing() . "§fms §aon your connection§e!");
                                      return true;
                                   }
                               }
