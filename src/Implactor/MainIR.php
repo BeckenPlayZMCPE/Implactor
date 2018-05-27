@@ -51,6 +51,9 @@ use pocketmine\level\Position;
 use pocketmine\entity\Entity;
 use pocketmine\entity\EffectInstance;
 use pocketmine\math\Vector3;
+use pocketmine\level\particle\FlameParticle;
+use pocketmine\level\particle\SnowballPoofParticle;
+use pocketmine\level\particle\WaterParticle;
 use pocketmine\level\particle\DestroyBlockParticle as FrostBloodParticle;
 use pocketmine\block\Block;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -117,7 +120,12 @@ class MainIR extends PluginBase implements Listener {
               }
 	
            public function onMove(PlayerMoveEvent $ev) : void{
-            if(in_array($ev->getPlayer()->getName(), $this->freeze)) $ev->setCancelled(true);
+           $player = $ev->getPlayer();
+           $player->getLevel()->addParticle(new FlameParticle($player));
+           $player->getLevel()->addParticle(new SnowballPoofParticle($player));
+           $player->getLevel()->addParticle(new WaterParticle($player));
+       
+            if(in_array($player->getName(), $this->freeze)) $ev->setCancelled(true);
          }    
 	
          public function onPlayerQuit(PlayerQuitEvent $ev): void{
