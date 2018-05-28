@@ -143,12 +143,12 @@ class MainIR extends PluginBase implements Listener {
         if(!$this->getServer()->isWhitelisted($ev->getPlayer()->getName())){
             $ev->setKickMessage("§l§7[ §cNOTICE §7]\n §eThis server is currently on §fmaintenence §emode!");
             $ev->setCancelled(true);
-        }
         if(!$this->getServer()->isBanned($ev->getPlayer()->getName())){
             $ev->setKickMessage("§l§7[ §cNOTICE §7]\n §eYou got §cbanned §efrom this server!");
             $ev->setCancelled(true);
         }
      }
+   }
 	
 	     public function onPlayerJoin(PlayerJoinEvent $ev): void{
              $player = $ev->getPlayer();
@@ -277,6 +277,7 @@ class MainIR extends PluginBase implements Listener {
                 $player->setNameTag($this->translateColors("&", ($name . "\n" . (str_replace("@health", $this->getHealthStatus($player), $statusformat)))));
               }
            }
+        }
   
                public function getHealthStatus(Player $player) {
                   $config = $this->getConfig()->getAll();
@@ -286,7 +287,6 @@ class MainIR extends PluginBase implements Listener {
                    $healthstatus = (($config["Health-Color"]) . (str_repeat($symbol, $currenthealth / 2)) . IR::RESET . ($config["Used-Health-Color"]) . (str_repeat($symbol, $usedhealth / 2)));
                     return $healthstatus;
                  }
-              }
 
                       public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
                       if(strtolower($command->getName()) == "hub") {
