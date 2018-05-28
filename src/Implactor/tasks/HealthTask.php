@@ -29,7 +29,7 @@ use Implactor\MainIR;
 
 class HealthTask extends PluginTask {
 
-    public function __construct(Main $plugin, $player) {
+    public function __construct(MainIR $plugin, $player) {
         parent::__construct($plugin);
         $this->plugin = $plugin;
         $this->player = $player;
