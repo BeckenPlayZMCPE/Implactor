@@ -306,7 +306,7 @@ class MainIR extends PluginBase implements Listener {
 		      }
 	       }
 	
-	                     public function spawnNPC(Player $player, string $name){
+	                     public function spawnBot(Player $player, string $name){
 		                    $nbt = Entity::createBaseNBT($player, null, 2, 2);
 		                   $nbt->setTag($player->namedtag->getTag("Skin"));
 		                    $npc = new BotHuman($player->getLevel(), $nbt);
@@ -623,19 +623,19 @@ class MainIR extends PluginBase implements Listener {
                                return true;
                          }
                          
-                  if(strtolower($command->getName()) == "bot") {
+                           if(strtolower($command->getName()) == "bot") {
                                if($sender instanceof Player){
-                  if($sender->hasPermission("implactor.bot")){
+                           if($sender->hasPermission("implactor.bot")){
 			          if(count($args) < 1){
 			          $sender->sendMessage("§l§8(§6!§8)§r §cCommand usage§8:§r§7 /bot <name>");
 			          return false;
 		           }
-		          $this->spawnNPC($sender, $args[0]);
+		          $this->spawnBot($sender, $args[0]);
 		          $sender->sendMessage("§eSpawned §bbot §ecalled§c: " . $args[0]);
 		          return true;
-	             }
-	          }
-            }
-         }
-      }
+	               }
+	              }
+                    }
+                  }
+                 }
                                                                                
