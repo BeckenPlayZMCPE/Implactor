@@ -148,6 +148,7 @@ class MainIR extends PluginBase implements Listener {
             $ev->setKickMessage("§l§7[ §cNOTICE §7]\n §eYou got §cbanned §efrom this server!");
             $ev->setCancelled(true);
         }
+     }
 	
 	     public function onPlayerJoin(PlayerJoinEvent $ev): void{
              $player = $ev->getPlayer();
