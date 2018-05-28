@@ -531,6 +531,7 @@ class MainIR extends PluginBase implements Listener {
                                             $sender->sendMessage("§e/nick §9- §fSet your nickname or default!");
 					     $sender->sendMessage("§e/freeze §9- §bFreeze §fyourself or others will make you frozen!");
 					     $sender->sendMessage("§e/vanish §9- §6Vanish §fyourself or others will make you invisible!");
+					     $sender->sendMessage("§e/bot §9- §fSpawn your own §cdbot §fhuman!");
                                             return true;
                                            }
                                          }                                             
