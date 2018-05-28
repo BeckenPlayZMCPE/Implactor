@@ -27,7 +27,7 @@ use pocketmine\entity\Entity;
 use pocketmine\scheduler\PluginTask;
 
 use Implactor\MainIR;
-use Implactor\npc\bot\BotHuman
+use Implactor\npc\bot\BotHuman;
 
 class BotSneakTask extends PluginTask{
 
