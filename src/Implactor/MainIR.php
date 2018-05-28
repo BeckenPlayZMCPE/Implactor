@@ -44,6 +44,7 @@ use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
+use pocketmine\event\entity\EntityRegainHealthEvent;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\level\Location;
@@ -68,6 +69,9 @@ use Implactor\anti\AntiAdvertising;
 use Implactor\anti\AntiSwearing;
 use Implactor\npc\DeathHumanEntityTask;
 use Implactor\npc\DeathHumanClearEntityTask;
+use Implactor\tasks\GroupChangerTask;
+use Implactor\tasks\NickChangerTask;
+use Implactor\tasks\HealthTask;
 
 class MainIR extends PluginBase implements Listener {
 	
@@ -93,6 +97,43 @@ class MainIR extends PluginBase implements Listener {
           $this->getLogger()->info(IR::RED . "Implactor plugin is now offline!");
           $this->getServer()->shutdown();
         }
+        
+        public function registerEvents(): void{
+        $this->getServer()->getPluginManager()->registerEvents($this, $this);
+        if(is_dir($this->getServer()->getPluginPath() . "PureChat")){
+            $this->getServer()->getPluginManager()->registerEvents(new GroupChangerTask($this), $this);
+        }
+        elseif(is_dir($this->getServer()->getPluginPath() . "EssentialsPE")) {
+            $this->getServer()->getPluginManager()->registerEvents(new NickChangerTask($this), $this);
+        }
+    }
+    
+        public function translateColors($symbol, $message){
+        $message = str_replace($symbol."0", IR::BLACK, $message);
+        $message = str_replace($symbol."1", IR::DARK_BLUE, $message);
+        $message = str_replace($symbol."2", IR::DARK_GREEN, $message);
+        $message = str_replace($symbol."3", IR::DARK_AQUA, $message);
+        $message = str_replace($symbol."4", IR::DARK_RED, $message);
+        $message = str_replace($symbol."5", IR::DARK_PURPLE, $message);
+        $message = str_replace($symbol."6", IR::GOLD, $message);
+        $message = str_replace($symbol."7", IR::GRAY, $message);
+        $message = str_replace($symbol."8", IR::DARK_GRAY, $message);
+        $message = str_replace($symbol."9", IR::BLUE, $message);
+        $message = str_replace($symbol."a", IR::GREEN, $message);
+        $message = str_replace($symbol."b", IR::AQUA, $message);
+        $message = str_replace($symbol."c", IR::RED, $message);
+        $message = str_replace($symbol."d", IR::LIGHT_PURPLE, $message);
+        $message = str_replace($symbol."e", IR::YELLOW, $message);
+        $message = str_replace($symbol."f", IR::WHITE, $message);
+	
+        $message = str_replace($symbol."k", IR::OBFUSCATED, $message);
+        $message = str_replace($symbol."l", IR::BOLD, $message);
+        $message = str_replace($symbol."m", IR::STRIKETHROUGH, $message);
+        $message = str_replace($symbol."n", IR::UNDERLINE, $message);
+        $message = str_replace($symbol."o", IR::ITALIC, $message);
+        $message = str_replace($symbol."r", IR::RESET, $message);
+        return $message;
+    }
           
          public function onPlayerLogin(PlayerLoginEvent $ev): void{
           $ev->getPlayer()->teleport($this->getServer()->getDefaultLevel()->getSafeSpawn());
@@ -100,16 +141,25 @@ class MainIR extends PluginBase implements Listener {
 	
 	public function onPlayerPreLogin(PlayerPreLoginEvent $ev) : void{
         if(!$this->getServer()->isWhitelisted($ev->getPlayer()->getName())){
-            $ev->setKickMessage("§l§7[ §cNOTICR §7]\n §eThis server is currently on §fmaintenence §emode!");
+            $ev->setKickMessage("§l§7[ §cNOTICE §7]\n §eThis server is currently on §fmaintenence §emode!");
+            $ev->setCancelled(true);
+        if(!$this->getServer()->isBanned($ev->getPlayer()->getName())){
+            $ev->setKickMessage("§l§7[ §cNOTICE §7]\n §eYou got §cbanned §efrom this server!");
             $ev->setCancelled(true);
         }
-    }
+     }
+   }
 	
 	     public function onPlayerJoin(PlayerJoinEvent $ev): void{
              $player = $ev->getPlayer();
              $ev->setJoinMessage("§8[§a+§8] §a{$player->getName()}");
              $player->getLevel()->addSound(new EndermanTeleportSound($player));
+             
+              $config = $this->getConfig()->getAll();
+              if($config["Nametag"]["Enabled"] === true) {
+              $this->getServer()->getScheduler()->scheduleDelayedTask(new HealthTask($this, $player), 1);
        }
+   }
          
           public function onHit(EntityDamageEvent $ev): void{
            if ($ev->getEntity() instanceof Player) {
@@ -177,21 +227,67 @@ class MainIR extends PluginBase implements Listener {
                 if($entity->getAllowFlight() == true){
                     $entity->setFlying(false);
                     $entity->setAllowFlight(false);
-                    $entity->sendMessage("§l§7(§c!§7)§r §cYou are getting hit by a player!§e §cFly abilities has disabled automatically§e...");
+                    $entity->sendMessage("§l§7(§c!§7)§r §cYou are getting hit by a player!§e §cOh no§e...");
                     $entity->getLevel()->addParticle(new FrostBloodParticle($ev->getEntity(), Block::get(57)));      
                      if($entity instanceof DeathHumanEntityTask) $ev->setCancelled(true);
+                     
+                        $config = $this->getConfig()->getAll();
+                     if($config["Nametag"]["Enabled"] === true) {
+                     $this->getServer()->getScheduler()->scheduleDelayedTask(new HealthTask($this, $entity), 1);
                   }
               }
           }
        }
+     }
          
           public function onRespawn(PlayerRespawnEvent $ev) : void{
           $player = $ev->getPlayer();
             $title = "§l§cYOU ARE DEAD!";
              $subtitle = "§eRespawning...";
               $player->addTitle($title, $subtitle);
+              
+             $config = $this->getConfig()->getAll();
+          if($config["Nametag"]["Enabled"] === true) {
+            $this->getServer()->getScheduler()->scheduleDelayedTask(new HealthTask($this, $player), 1);
+            }
          }
+         
+                   public function onHeal(EntityRegainHealthEvent $event) {
+                   $entity = $event->getEntity();
+                   $config = $this->getConfig()->getAll();
+                    if($config["Nametag"]["Enabled"] === true) {
+                    $this->getServer()->getScheduler()->scheduleDelayedTask(new HealthTask($this, $entity), 1);
+               }
+           }         
+           
+                    public function setHealthNametag(Player $player) {
+                   $config = $this->getConfig()->getAll();
+                  if($player instanceof Player) {
+                 $statusformat = ($config["Nametag"]["Format"]);
+              if(is_dir($this->getServer()->getPluginPath() . "PureChat")){
+                $name = $this->getServer()->getPluginManager()->getPlugin("PureChat")->getNametag($player, ($player->getLevel()->getName()));
+                $player->setNameTag($this->translateColors("&", ($name . "\n" . (str_replace("@health", $this->getHealthStatus($player), $statusformat)))));
+            }
+            elseif(is_dir($this->getServer()->getPluginPath() . "EssentialsPE")) {
+                $nick = ($this->getServer()->getPluginManager()->getPlugin("EssentialsPE")->getNewNick($player));
+                $name = ($this->translateColors("&", ($nick . "\n" . (str_replace("@health", $this->getHealthStatus($player), $statusformat)))));
+                $this->getServer()->getPluginManager()->getPlugin("EssentialsPE")->setNick($name);
+               }  else {
+                $name = $player->getName();
+                $player->setNameTag($this->translateColors("&", ($name . "\n" . (str_replace("@health", $this->getHealthStatus($player), $statusformat)))));
+              }
+           }
+        }
   
+               public function getHealthStatus(Player $player) {
+                  $config = $this->getConfig()->getAll();
+                    $symbol = $config["Symbol"];
+                    $currenthealth = ($player->getHealth());
+                    $usedhealth = (($player->getMaxHealth()) - ($player->getHealth()));
+                   $healthstatus = (($config["Health-Color"]) . (str_repeat($symbol, $currenthealth / 2)) . IR::RESET . ($config["Used-Health-Color"]) . (str_repeat($symbol, $usedhealth / 2)));
+                    return $healthstatus;
+                 }
+
                       public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
                       if(strtolower($command->getName()) == "hub") {
                       	if($sender instanceof Player){
