@@ -35,8 +35,8 @@ class GroupChangerTask implements Listener {
         $this->plugin = $plugin;
     }
     
-    public function onGroupChange(PPGroupChangedEvent $event) {
-        $this->player = $event->getPlayer();
+    public function onGroupChange(PPGroupChangedEvent $ev) {
+        $this->player = $ev->getPlayer();
         $this->config = $this->plugin->getConfig()->getAll();
         if($this->config["Nametag"]["Enabled"] === true) {
             $this->plugin->getServer()->getScheduler()->scheduleDelayedTask(new HealthTask($this->plugin, $this->player), 1);

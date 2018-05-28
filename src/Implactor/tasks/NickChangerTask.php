@@ -35,9 +35,9 @@ class NickChangerTask implements Listener {
         $this->plugin = $plugin;
     }
     
-    public function onNickChange(PlayerNickChangeEvent $event) {
-        $this->plugin->broadcastMessage("A nickname of player has changed!");
-        $this->player = $event->getPlayer();
+    public function onNickChange(PlayerNickChangeEvent $ev) {
+        $this->plugin->broadcastMessage("A nickname of" .$this->player->getName(). "has changed!");
+        $this->player = $ev->getPlayer();
         $this->config = $this->plugin->getConfig()->getAll();
         if($this->config["Nametag"]["Enabled"] === true) {
             $this->plugin->getServer()->getScheduler()->scheduleDelayedTask(new HealthTask($this, $this->player), 1);
