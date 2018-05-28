@@ -254,7 +254,7 @@ class MainIR extends PluginBase implements Listener {
             }
          }
          
-                   public function onHeal(EntityRegainHealthEvent $ev) {
+                   public function onHeal(EntityRegainHealthEvent $ev): void{
                    $entity = $ev->getEntity();
                    $config = $this->getConfig()->getAll();
                     if($config["Nametag"]["Enabled"] === true) {
@@ -303,12 +303,14 @@ class MainIR extends PluginBase implements Listener {
               }
                  
                        if(strtolower($command->getName()) == "sethub") {
+			       if($sender instanceof Player){
                        	if($sender->hasPermission("implactor.sethub")) {                       	   
                        	  $sender->getLevel()->setSpawnLocation($sender);
                              $sender->sendMessage(IR::YELLOW . "You have successfully set a main hub!");
                              return true;
                          }
                       }
+		}
                     
                         
                         if(strtolower($command->getName()) == "fly") {
@@ -331,36 +333,44 @@ class MainIR extends PluginBase implements Listener {
                            }
 			      
                            if(strtolower($command->getName()) == "gmc") {
+				   if($sender instanceof Player){
                        	if($sender->hasPermission("implactor.gamemode")) {                      	   
                        	   $sender->setGamemode(Player::CREATIVE);
                            $sender->sendMessage("§eChanged your gamemode to §aCreative §emode! \n\n §7- §cDo not use this command again when you're already changed...");
                            return true;
                        }
                      }
+                   }
                      
                            if(strtolower($command->getName()) == "gms") {
+				   if($sender instanceof Player){
                        	if($sender->hasPermission("implactor.gamemode")) {                       	   
                               $sender->setGamemode(Player::SURVIVAL); 
                               $sender->sendMessage("§eChanged your gamemode to §cSurvival §emode! \n\n §7- §cDo not use this command again when you're already changed...");
                               return true;
                        }
                      }
+                  }
                    
                            if(strtolower($command->getName()) == "gma") {
+				   if($sender instanceof Player){
                        	if($sender->hasPermission("implactor.gamemode")) {                     	   
                        	   $sender->setGamemode(Player::ADVENTURE);
                            $sender->sendMessage("§eChanged your gamemode to §cAdventure §emode! \n\n §7- §cDo not use this command again when you're already changed...");
                            return true;
                         }
                       }
+                   }
                     
                            if(strtolower($command->getName()) == "gmspc") {
+				   if($sender instanceof Player){
                        	if($sender->hasPermission("implactor.gamemode")) {
                               $sender->setGamemode(Player::SPECTATOR);
                               $sender->sendMessage("§eChanged your gamemode to §bSpectator §emode! \n\n §7- §cDo not use this command again when you're already changed...");
                               return true;
                             }
                          }
+                      }
 			      
                           
                            if(strtolower($command->getName()) == "nick") {
@@ -401,12 +411,14 @@ class MainIR extends PluginBase implements Listener {
                                     }
                                       
                                             if(strtolower($command->getName()) == "kill") {
+						    if($sender instanceof Player){
                                              if($sender->hasPermission("implactor.kill")){                                            
                                             $sender->setHealth(0);
                                             $sender->sendMessage("§cMove like pain, be steady like a death!");
                                             return true;
                                           }
                                         }
+                                      }
                                       
                                     if(strtolower($command->getName()) == "ping") {
                                     	if($sender instanceof Player){
@@ -419,22 +431,27 @@ class MainIR extends PluginBase implements Listener {
                           }
                               
                               if(strtolower($command->getName()) == "clearitem") {
+				      if($sender instanceof Player){
                                      if($sender->hasPermission("implactor.clearinventory")){                                  
                                     $sender->getInventory()->clearAll();
                                     $sender->sendMessage("§aAll §eitems §awas cleared successfully from your inventory!");
                                     return true;
                                     }
                                  }
-                                 
+                            }     
+				      
                                  if(strtolower($command->getName()) == "cleararmor") {
+					 if($sender instanceof Player){
                                      if($sender->hasPermission("implactor.cleararmor")){                                  
                                     $sender->getArmorInventory()->clearAll();
                                     $sender->sendMessage("§eAll armors §awas cleared successfully from your body!");
                                     return true;
-                                    }
-                                  }
+                                       }
+				     }
+                                   }
                             
                                     if(strtolower($command->getName()) == "clearall") {
+					    if($sender instanceof Player){
                                      if($sender->hasPermission("implactor.clearall")){                                    	                                              
                                     $sender->getInventory()->clearAll();
                                     $sender->getArmorInventory()->clearAll();
@@ -442,8 +459,10 @@ class MainIR extends PluginBase implements Listener {
                                     return true;
                                     }
                                  }
+                              }
                        
                                      if(strtolower($command->getName()) == "heal") {
+					     if($sender instanceof Player){
                                      if($sender->hasPermission("implactor.heal")){                                     	
                                      	$sender->setHealth(20);
                                          $sender->setMaxHealth(20);
@@ -451,14 +470,17 @@ class MainIR extends PluginBase implements Listener {
                                           return true;
                                      }
                                    }
+                                }
                                  
                                      if(strtolower($command->getName()) == "feed") {
+					     if($sender instanceof Player){
                                      if($sender->hasPermission("implactor.feed")){                                     	
                                      	$sender->setFood(20);
                                          $sender->sendMessage("§aYour hunger bar has been fully §efilled!");
                                          return true;
                                      }
                                   }
+                                }
                                 
                                     if(strtolower($command->getName()) == "ihelp") {
                                     	if($sender instanceof Player){
