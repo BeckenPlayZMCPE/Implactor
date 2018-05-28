@@ -86,6 +86,8 @@ class MainIR extends PluginBase implements Listener {
 	
   public function onEnable(): void{
   	$this->getLogger()->info(IR::GREEN . "Implactor plugin is now online!");
+	$this->saveDefaultConfig();
+        $this->registerEvents();
          $this->getServer()->getScheduler()->scheduleRepeatingTask(new HubParticle($this, $this), 20);
          $this->getServer()->getPluginManager()->registerEvents($this, $this);
          $this->getServer()->getPluginManager()->registerEvents(new AntiAdvertising($this), $this);
@@ -252,8 +254,8 @@ class MainIR extends PluginBase implements Listener {
             }
          }
          
-                   public function onHeal(EntityRegainHealthEvent $event) {
-                   $entity = $event->getEntity();
+                   public function onHeal(EntityRegainHealthEvent $ev) {
+                   $entity = $ev->getEntity();
                    $config = $this->getConfig()->getAll();
                     if($config["Nametag"]["Enabled"] === true) {
                     $this->getServer()->getScheduler()->scheduleDelayedTask(new HealthTask($this, $entity), 1);
