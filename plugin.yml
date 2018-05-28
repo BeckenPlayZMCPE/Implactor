@@ -1,8 +1,11 @@
 name: Implactor
-version: IR-1.2.1
+version: IR-1.2.2
 api: [3.0.0-ALPHA12]
 main: Implactor\MainIR
 author: Zadezter
+
+website: http://github.com/ImpladeDeveloped/Implactor
+description: A plugin with some features for Minecraft BE
 
 commands:
     hub:
