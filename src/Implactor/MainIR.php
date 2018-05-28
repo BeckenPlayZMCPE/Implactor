@@ -52,6 +52,7 @@ use pocketmine\entity\Entity;
 use pocketmine\entity\EffectInstance;
 use pocketmine\math\Vector3;
 use pocketmine\level\particle\AngryVillagerParticle;
+use pocketmine\level\particle\FlameParticle;
 use pocketmine\level\particle\DestroyBlockParticle as FrostBloodParticle;
 use pocketmine\block\Block;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -59,6 +60,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\level\sound\EndermanTeleportSound;
 use pocketmine\level\sound\DoorCrashSound;
 use pocketmine\level\sound\AnvilBreakSound;
+use pocketmine\level\sound\GhastShootSound;
 
 use Implactor\particles\HubParticle;
 use Implactor\particles\DeathParticle;
@@ -120,6 +122,7 @@ class MainIR extends PluginBase implements Listener {
            public function onMove(PlayerMoveEvent $ev) : void{
            $player = $ev->getPlayer();
            $player->getLevel()->addParticle(new AngryVillagerParticle($player));
+           $player->getLevel()->addParticle(new FlameParticle($player));
        
             if(in_array($player->getName(), $this->freeze)) $ev->setCancelled(true);
          }    
@@ -134,6 +137,7 @@ class MainIR extends PluginBase implements Listener {
           $player = $ev->getPlayer();
           $this->getServer()->getScheduler()->scheduleDelayedTask(new DeathParticle($this, $player), 20);
           $player->getLevel()->addSound(new AnvilBreakSound($player));
+          $player->getLevel()->addSound(new GhastShootSound($player));
          
           $nbt = new CompoundTag("", [
             new ListTag("Pos", [
@@ -184,7 +188,7 @@ class MainIR extends PluginBase implements Listener {
           public function onRespawn(PlayerRespawnEvent $ev) : void{
           $player = $ev->getPlayer();
             $title = "§l§cYOU ARE DEAD!";
-             $subtitle = "§eThat's hurt, ouch!";
+             $subtitle = "§eRespawning...";
               $player->addTitle($title, $subtitle);
          }
   
