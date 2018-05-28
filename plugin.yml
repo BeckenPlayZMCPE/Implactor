@@ -65,6 +65,9 @@ commands:
     vanish:
         description: Vanish yourself or other players!
         permission: implactor.vanish
+    bot:
+        description: Spawn a bot human with you own current equipped skin!
+        permission: implactor.bot
 permissions:
     implactor.*:
      default: op
@@ -122,4 +125,7 @@ permissions:
      default: op
     implactor.freeze:
      description: "Allow OP staff members to freeze them"
+     default: op
+    implactor.bot:
+     description: "Allow OP staff members to spawn their own bot human"
      default: op
