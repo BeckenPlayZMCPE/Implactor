@@ -1,0 +1,36 @@
+---
+# ##### ##### ##### ##### #####
+#  _____                 _            _             
+# |_   _|               | |          | |            
+#   | |  _ __ ___  _ __ | | __ _  ___| |_ ___  _ __ 
+#   | | | '_ ` _ \| '_ \| |/ _` |/ __| __/ _ \| '__|
+#  _| |_| | | | | | |_) | | (_| | (__| || (_) | |   
+# |_____|_| |_| |_| .__/|_|\__,_|\___|\__\___/|_|   
+#                 | |                               
+#                 |_|                               
+#
+# ##### ##### ##### ##### #####
+#
+# Configuration by haKingdomsCraft
+# Designed by Zadezter
+#
+# ##### ##### ##### ##### ######
+
+# Set it to true or false or anything here on health config!
+# Health symbol for your tag bar!
+Symbol: "="
+
+# Display the health color on your tag bar! #
+# Full Health Points #
+Health-Color: "&l&c"
+
+# Display the health color if you have lost on tag bar! #
+# Lost Health Points #
+Used-Health-Color: "&l&7"
+
+# Health bar display settings! #
+# NameTag + Format #
+Nametag:
+    Enabled: true
+    Format: "" # This is default non-prefix format for Implactor #
+...
