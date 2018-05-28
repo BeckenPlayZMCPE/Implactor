@@ -45,6 +45,7 @@ use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\entity\EntityRegainHealthEvent;
+use pocketmine\utils\Config;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\level\Location;
@@ -79,6 +80,8 @@ class MainIR extends PluginBase implements Listener {
     private $freeze = [];
    /** @var array $vanish */
     private $vanish = [];
+   /** @var array */
+    private $config;
 	
   public function onLoad(): void{
    $this->getLogger()->info(IR::AQUA . "Loading all resources and codes on Implactor plugin...");
