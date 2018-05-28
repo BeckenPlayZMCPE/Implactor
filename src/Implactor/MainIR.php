@@ -59,6 +59,7 @@ use pocketmine\level\particle\DestroyBlockParticle as FrostBloodParticle;
 use pocketmine\block\Block;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\entity\EntitySpawnEvent;
 use pocketmine\level\sound\EndermanTeleportSound;
 use pocketmine\level\sound\DoorCrashSound;
 use pocketmine\level\sound\AnvilBreakSound;
@@ -73,6 +74,10 @@ use Implactor\npc\DeathHumanClearEntityTask;
 use Implactor\tasks\GroupChangerTask;
 use Implactor\tasks\NickChangerTask;
 use Implactor\tasks\HealthTask;
+use Implactor\npc\bot\BotHuman;
+use Implactor\npc\bot\BotTask;
+use Implactor\npc\bot\BotSneakTask;
+use Implactor\npc\bot\BotUnsneakTask;
 
 class MainIR extends PluginBase implements Listener {
 	
@@ -96,6 +101,7 @@ class MainIR extends PluginBase implements Listener {
          $this->getServer()->getPluginManager()->registerEvents(new AntiAdvertising($this), $this);
          $this->getServer()->getPluginManager()->registerEvents(new AntiSwearing($this), $this);
 	 Entity::registerEntity(DeathHumanEntityTask::class, true);
+	 Entity::registerEntity(BotHuman::class, true);
        }
   
          public function onDisable(): void{
@@ -292,7 +298,23 @@ class MainIR extends PluginBase implements Listener {
                    $healthstatus = (($config["Health-Color"]) . (str_repeat($symbol, $currenthealth / 2)) . IR::RESET . ($config["Used-Health-Color"]) . (str_repeat($symbol, $usedhealth / 2)));
                     return $healthstatus;
                  }
-
+                 
+                 public function onEntitySpawn(EntitySpawnEvent $ev){
+		           $entity = $ev->getEntity();
+		            if($entity instanceof BotHuman){
+			       $this->getServer()->getScheduler()->scheduleRepeatingTask(new BotTask($this, $entity), 60 * 20);
+		      }
+	       }
+	
+	                     public function spawnBot(Player $player, string $name){
+		                    $nbt = Entity::createBaseNBT($player, null, 2, 2);
+		                   $nbt->setTag($player->namedtag->getTag("Skin"));
+		                    $npc = new BotHuman($player->getLevel(), $nbt);
+		                  $npc->setNameTag($name);
+		                   $npc->setNameTagAlwaysVisible(true);
+		                  $npc->spawnToAll();
+		                }                 
+        
                       public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
                       if(strtolower($command->getName()) == "hub") {
                       	if($sender instanceof Player){
@@ -598,10 +620,22 @@ class MainIR extends PluginBase implements Listener {
                                 $sender->sendMessage("§cPlayer not found in server!");
                                 return false;
                                }
-                           }
-                           return true;
-                          }
+                               return true;
                          }
-
-			                  
+                         
+                           if(strtolower($command->getName()) == "bot") {
+                               if($sender instanceof Player){
+                           if($sender->hasPermission("implactor.bot")){
+			          if(count($args) < 1){
+			          $sender->sendMessage("§l§8(§6!§8)§r §cCommand usage§8:§r§7 /bot <name>");
+			          return false;
+		           }
+		          $this->spawnBot($sender, $args[0]);
+		          $sender->sendMessage("§eSpawned §bbot §ecalled§c: " . $args[0]);
+		          return true;
+	               }
+	              }
+                    }
+                  }
+                 }
                                                                                

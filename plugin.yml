@@ -1,8 +1,11 @@
 name: Implactor
-version: IR-1.2.1
+version: IR-1.2.2
 api: [3.0.0-ALPHA12]
 main: Implactor\MainIR
 author: Zadezter
+
+website: http://github.com/ImpladeDeveloped/Implactor
+description: A plugin with some features for Minecraft BE
 
 commands:
     hub:
@@ -65,6 +68,9 @@ commands:
     vanish:
         description: Vanish yourself or other players!
         permission: implactor.vanish
+    bot:
+        description: Spawn a bot human with you own current equipped skin!
+        permission: implactor.bot
 permissions:
     implactor.*:
      default: op
@@ -122,4 +128,7 @@ permissions:
      default: op
     implactor.freeze:
      description: "Allow OP staff members to freeze them"
+     default: op
+    implactor.bot:
+     description: "Allow OP staff members to spawn their own bot human"
      default: op
