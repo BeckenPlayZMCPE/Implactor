@@ -66,8 +66,6 @@ use pocketmine\level\sound\GhastShootSound;
 use Implactor\particles\HubParticle;
 use Implactor\particles\BotParticle;
 use Implactor\particles\DeathParticle;
-use Implactor\anti\AntiAdvertising;
-use Implactor\anti\AntiSwearing;
 use Implactor\npc\DeathHumanEntityTask;
 use Implactor\npc\DeathHumanClearEntityTask;
 use Implactor\npc\bot\BotHuman;
@@ -90,8 +88,6 @@ class MainIR extends PluginBase implements Listener {
   	$this->getLogger()->info(IR::GREEN . "Implactor plugin is now online!");
          $this->getServer()->getScheduler()->scheduleRepeatingTask(new HubParticle($this, $this), 20);
          $this->getServer()->getPluginManager()->registerEvents($this, $this);
-         $this->getServer()->getPluginManager()->registerEvents(new AntiAdvertising($this), $this);
-         $this->getServer()->getPluginManager()->registerEvents(new AntiSwearing($this), $this);
 	 Entity::registerEntity(DeathHumanEntityTask::class, true);
 	 Entity::registerEntity(BotHuman::class, true);
        }
@@ -536,7 +532,7 @@ class MainIR extends PluginBase implements Listener {
 			          return false;
 		           }
 		          $this->spawnBot($sender, $args[0]);
-		          $sender->sendMessage("§eSpawned §bbot §enamed§c: " . $args[0]);
+		          $sender->sendMessage("§eSpawned §bbot §enamed§c:§r " . $args[0]);
 		          return true;
 	               }
 	              }
