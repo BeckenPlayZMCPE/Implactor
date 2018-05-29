@@ -302,7 +302,7 @@ class MainIR extends PluginBase implements Listener {
                  public function onEntitySpawn(EntitySpawnEvent $ev){
 		           $entity = $ev->getEntity();
 		            if($entity instanceof BotHuman){
-			       $this->getServer()->getScheduler()->scheduleRepeatingTask(new BotTask($this, $entity), 60 * 20);
+			       $this->getServer()->getScheduler()->scheduleRepeatingTask(new BotTask($this, $entity), 200);
 		      }
 	       }
 	
@@ -531,7 +531,7 @@ class MainIR extends PluginBase implements Listener {
                                             $sender->sendMessage("§e/nick §9- §fSet your nickname or default!");
 					     $sender->sendMessage("§e/freeze §9- §bFreeze §fyourself or others will make you frozen!");
 					     $sender->sendMessage("§e/vanish §9- §6Vanish §fyourself or others will make you invisible!");
-					     $sender->sendMessage("§e/bot §9- §fSpawn your own §cdbot §fhuman!");
+					     $sender->sendMessage("§e/bot §9- §fSpawn your own §cbot §fhuman!");
                                             return true;
                                            }
                                          }                                             
@@ -632,7 +632,7 @@ class MainIR extends PluginBase implements Listener {
 			          return false;
 		           }
 		          $this->spawnBot($sender, $args[0]);
-		          $sender->sendMessage("§eSpawned §bbot §ecalled§c: " . $args[0]);
+		          $sender->sendMessage("§eSpawned §bbot §enamed§c: " . $args[0]);
 		          return true;
 	               }
 	              }
