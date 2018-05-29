@@ -44,6 +44,7 @@ use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
+use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\level\Location;
