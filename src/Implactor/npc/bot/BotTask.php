@@ -47,7 +47,7 @@ class BotTask extends PluginTask{
 		if($entity instanceof BotHuman){
 			$this->plugin->getServer()->getScheduler()->scheduleRepeatingTask(new BotSneakTask($this->plugin, $entity), 50);
 			$this->plugin->getServer()->getScheduler()->scheduleRepeatingTask(new BotUnsneakTask($this->plugin, $entity), 50);
-                        $this->plugin->getServer()->getScheduler()->scheduleRepeatingTask(new BotParticleTask($this->plugin, $entity), 20);
+                        $this->plugin->getServer()->getScheduler()->scheduleRepeatingTask(new BotParticle($this->plugin, $entity), 20);
 		}
 	}
 }
