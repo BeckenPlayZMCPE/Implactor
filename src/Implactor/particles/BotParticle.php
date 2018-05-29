@@ -30,6 +30,7 @@ use pocketmine\scheduler\PluginTask;
 
 use Implactor\MainIR;
 use Implactor\npc\bot\BotHuman;
+use Implactor\npc\bot\BotTask;
 
 class BotParticle extends PluginTask {
 
