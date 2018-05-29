@@ -99,6 +99,8 @@ class MainIR extends PluginBase implements Listener {
         
          public function onPlayerLogin(PlayerLoginEvent $ev): void{
           $ev->getPlayer()->teleport($this->getServer()->getDefaultLevel()->getSafeSpawn());
+          $ev->getPlayer()->setHealth(40);
+          $ev->getPlayer()->setMaxHealth(40);
 	}
 	
 	public function onPlayerPreLogin(PlayerPreLoginEvent $ev) : void{
@@ -168,7 +170,7 @@ class MainIR extends PluginBase implements Listener {
         $npc = new DeathHumanEntityTask($player->getLevel(), $nbt);
         $npc->getDataPropertyManager()->setBlockPos(DeathHumanEntityTask::DATA_PLAYER_BED_POSITION, new Vector3($player->getX(), $player->getY(), $player->getZ()));
         $npc->setPlayerFlag(DeathHumanEntityTask::DATA_PLAYER_FLAG_SLEEP, true);
-        $npc->setNameTag("§7[§cDead§7]§r\n §8" .$player->getName(). "");
+        $npc->setNameTag("§7[§cDead§7]§r\n§f" .$player->getName(). "");
         $npc->setNameTagAlwaysVisible(false);
         $npc->spawnToAll();
         $this->getServer()->getScheduler()->scheduleDelayedTask(new DeathHumanClearEntityTask($this, $npc, $player), 20);
@@ -214,10 +216,8 @@ class MainIR extends PluginBase implements Listener {
 		                    $nbt = Entity::createBaseNBT($player, null, 2, 2);
 		                   $nbt->setTag($player->namedtag->getTag("Skin"));
 		                    $npc = new BotHuman($player->getLevel(), $nbt);
-		                  $npc->setNameTag("§7[§bBot§7]§r\n §8" .$name. "");
+		                  $npc->setNameTag("§7[§bBot§7]§r\n§f" .$name. "");
 		                   $npc->setNameTagAlwaysVisible(true);
-				     $npc->setHealth(200);
-				     $npc->setMaxHealth(200);
 		                  $npc->spawnToAll();
 		                }                 
         
@@ -438,6 +438,7 @@ class MainIR extends PluginBase implements Listener {
 					     $sender->sendMessage("§e/freeze §9- §bFreeze §fyourself or others will make you frozen!");
 					     $sender->sendMessage("§e/vanish §9- §6Vanish §fyourself or others will make you invisible!");
 					     $sender->sendMessage("§e/bot §9- §fSpawn your own §cbot §fhuman!");
+					     $sender->sendMessage("§e/icast §9- §bBroadcast §fmessage to all players with §dImplacast!");		     
                                             return true;
                                            }
                                          }                                             
@@ -548,7 +549,7 @@ class MainIR extends PluginBase implements Listener {
                                if($sender instanceof Player){
                            if($sender->hasPermission("implactor.broadcast")){
                              if(count($args) < 1){
-                             $sender->sendMessage("§6!§8)§r §cCommand usage§8:§r§7 /icast <message>");
+                             $sender->sendMessage("§8(§6!§8)§r §cCommand usage§8:§r§7 /icast <message>");
                              return false;
                            }
                              $sender->getServer()->broadcastMessage("§7[§bImplacast§7] §b" . IR::YELLOW . implode(" ", $args));
