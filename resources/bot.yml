@@ -10,6 +10,6 @@
 maths: true
 
 # A prefix for bot humans.
-# Default Implactor's bot humans prefix,
+# "ibot" is a default Implactor's bot humans prefix!
 prefix: "ibot"
 ...
