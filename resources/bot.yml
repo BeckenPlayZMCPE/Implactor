@@ -1,0 +1,15 @@
+---
+################################
+# Implactor Configuration File #
+# .Bot Human System For MC:BE. #
+################################
+
+# Make the bot humans answer your math questions.
+# true = Enable Maths.
+# false = Disable Maths, prefix not work!
+maths: true
+
+# A prefix for bot humans.
+# Default Implactor's bot humans prefix,
+prefix: "ibot"
+...
