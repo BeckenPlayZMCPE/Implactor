@@ -70,6 +70,7 @@ use Implactor\npc\DeathHumanEntityTask;
 use Implactor\npc\DeathHumanClearEntityTask;
 use Implactor\npc\bot\BotHuman;
 use Implactor\npc\bot\BotTask;
+use Implactor\npc\bot\BotParticleTask;
 use Implactor\npc\bot\BotSneakTask;
 use Implactor\npc\bot\BotUnsneakTask;
 
