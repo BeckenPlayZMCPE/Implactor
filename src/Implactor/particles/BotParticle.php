@@ -29,9 +29,9 @@ use pocketmine\level\particle\WaterParticle;
 use pocketmine\scheduler\PluginTask;
 
 use Implactor\MainIR;
-use Implactor\BotHuman;
+use Implactor\npc\bot\BotHuman;
 
-class BotParticle extends PluginTask{
+class BotParticle extends PluginTask {
 
 	/** @var MainIR $plugin */
 	/** @var Entity $entity */
