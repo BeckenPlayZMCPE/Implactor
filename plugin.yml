@@ -74,9 +74,6 @@ commands:
     icast:
         description: Broadcast your message to all players who online!
         permission: implactor.broadcast
-    size:
-        description: Change your player size to small or tiny!
-        permission: implactor.size
 permissions:
     implactor.*:
      default: op
@@ -138,6 +135,3 @@ permissions:
     implactor.broadcast:
      description: "Allow OP staff members to broadcast messages"
      default: op
-    implactor.size:
-     description: "Allow player to change their size"
-     default: true
