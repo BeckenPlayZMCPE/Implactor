@@ -27,7 +27,7 @@ use pocketmine\scheduler\PluginTask;
 use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\plugin\Plugin;
-use pocketmine\level\particle\RedstoneParticle;
+use pocketmine\level\particle\EnchantmentTableParticle;
 use pocketmine\math\Vector3;
 use pocketmine\level\Level;
 use pocketmine\level\Position;
@@ -61,7 +61,7 @@ class DeathParticle extends PluginTask {
     $radius = 1;
     $count = 6;
     
-	  $deathp = new RedstoneParticle($center, $r, $g, $b, 1);
+	  $deathp = new EnchantmentTableParticle($center, $r, $g, $b, 1);
                 for($yaw = 0, $y = $center->y; $y < $center->y + 4; $yaw += (M_PI * 2) / 20, $y += 1 / 20){
                   $x = -sin($yaw) + $center->x;
                   $z = cos($yaw) + $center->z;
