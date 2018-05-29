@@ -62,6 +62,7 @@ use pocketmine\level\sound\EndermanTeleportSound;
 use pocketmine\level\sound\DoorCrashSound;
 use pocketmine\level\sound\AnvilBreakSound;
 use pocketmine\level\sound\GhastShootSound;
+use pocketmine\utils\Config;
 
 use Implactor\particles\HubParticle;
 use Implactor\particles\BotParticle;
@@ -86,8 +87,16 @@ class MainIR extends PluginBase implements Listener {
   }
 	
   public function onEnable(): void{
-  	$this->getLogger()->info(IR::GREEN . "Implactor plugin is now online!");
          $this->getServer()->getScheduler()->scheduleRepeatingTask(new HubParticle($this, $this), 20);
+	  if(!is_dir($this->getDataFolder())){
+		@mkdir($this->getDataFolder());
+		}
+		$this->saveResource("bot.yml");
+		$config = new Config($this->getDataFolder() . "bot.yml", Config::YAML);
+		if($config->get("maths")){
+			$this->getLogger()->info("Enabling file from configuration: - Maths....");
+		}
+	        $this->getLogger()->info(IR::GREEN . "Implactor plugin is now online!");
          $this->getServer()->getPluginManager()->registerEvents($this, $this);
 	 Entity::registerEntity(DeathHumanEntityTask::class, true);
 	 Entity::registerEntity(BotHuman::class, true);
@@ -197,7 +206,7 @@ class MainIR extends PluginBase implements Listener {
        }
      }
          
-          public function onRespawn(PlayerRespawnEvent $ev) : void{
+          public function onPlayerRespawn(PlayerRespawnEvent $ev) : void{
           $player = $ev->getPlayer();
             $title = "§l§cYOU ARE DEAD!";
              $subtitle = "§eRespawning...";
@@ -220,8 +229,44 @@ class MainIR extends PluginBase implements Listener {
 		                  $npc->setNameTag("§7[§bBot§7]§r\n§f" .$name. "");
 		                   $npc->setNameTagAlwaysVisible(true);
 		                  $npc->spawnToAll();
-		                }                 
-        
+		                }       
+	
+                              public function onPlayerChat(PlayerChatEvent $ev){
+                              $config = new Config($this->getDataFolder() . "bot.yml", Config::YAML);
+                              if($config->get("maths")){
+                              $msg = $ev->getMessage();
+                               $player = $ev->getPlayer();
+				    $prefix = $config->get("prefix");
+                                 if($msg[0] == $prefix){
+				foreach($this->getServer()->getOnlinePlayers() as $p){
+					if(!is_numeric($msg[1]) or !is_numeric($msg[3]) or $msg[2] !== "+" or $msg[2] !== "-" or $msg[2] !== "×" or $msg[2] !== "÷"){
+						$player->sendMessage(TextFormat::GREEN . "§7[§bBot§7]§r " . TextFormat::RED . "Bot Usage§e:§c " . $prefix . " {number} + or - or × or ÷ {number}");
+						$ev->setCancelled();
+						return;
+                                                } else {
+						if($msg[2] == "+"){
+							$p->sendMessage("§7[§bBot§7]§r " . IR::BLUE . $msg[1] . " plus " . $msg[3] . " equals " . (int)$msg[1] + (int)$msg[3]);
+							return;
+						} elseif($msg[2] == "-"){
+							$p->sendMessage("§7[§bBot§7]§r " . IR::BLUE . $msg[1] . " minus " . $msg[3] . " equals " . (int)$msg[1] - (int)$msg[3]);
+							return;
+						} elseif($msg[2] == "×"){
+							$p->sendMessage("§7[§bBot§7]§r " . IR::YELLOW . $msg[1] . " times " . $msg[3] . " equals " . (int)$msg[1] * (int)$msg[3]);
+							return;
+						} elseif($msg[2] == "÷"){
+							$p->sendMessage("§7[§bBot§7]§r " . IR::YELLOW . $msg[1] . " divided by " . $msg[3] . " equals " . (int)$msg[1] / (int)$msg[3]);
+							return;
+						}
+					}
+					if($msg == $prefix . " 2 + 2 - 1"){
+						$p->sendMessage(TextFormat::GREEN . "§7[§bSimply§7]§r " . IR::YELLOW . "2 + 2 equals 4, and minus 1 equals 3!");
+						return;
+                                               }
+                                             }
+					 }
+				      }
+				     }
+	       
                       public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
                       if(strtolower($command->getName()) == "hub") {
                       	if($sender instanceof Player){
