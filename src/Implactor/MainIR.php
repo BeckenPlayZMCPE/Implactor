@@ -543,6 +543,20 @@ class MainIR extends PluginBase implements Listener {
 	               }
 	              }
                     }
-                  }
-                 }
-                                                                               
+			      
+                          if(strtolower($command->getName()) == "icast") {
+                               if($sender instanceof Player){
+                           if($sender->hasPermission("implactor.broadcast")){
+                             if(count($args) < 1){
+                             $sender->sendMessage("§6!§8)§r §cCommand usage§8:§r§7 /icast <message>");
+                             return false;
+                           }
+                             $sender->getServer()->broadcastMessage("§7[§bImplacast§7] §b" . IR::YELLOW . implode(" ", $args));
+                             return true;
+                           }
+                        }
+                       }
+                      }
+                     }
+                    }
+  
