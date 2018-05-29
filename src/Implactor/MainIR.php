@@ -44,8 +44,6 @@ use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
-use pocketmine\event\entity\EntityRegainHealthEvent;
-use pocketmine\utils\Config;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\level\Location;
@@ -66,14 +64,12 @@ use pocketmine\level\sound\AnvilBreakSound;
 use pocketmine\level\sound\GhastShootSound;
 
 use Implactor\particles\HubParticle;
+use Implactor\particles\BotParticle;
 use Implactor\particles\DeathParticle;
 use Implactor\anti\AntiAdvertising;
 use Implactor\anti\AntiSwearing;
 use Implactor\npc\DeathHumanEntityTask;
 use Implactor\npc\DeathHumanClearEntityTask;
-use Implactor\tasks\GroupChangerTask;
-use Implactor\tasks\NickChangerTask;
-use Implactor\tasks\HealthTask;
 use Implactor\npc\bot\BotHuman;
 use Implactor\npc\bot\BotTask;
 use Implactor\npc\bot\BotSneakTask;
@@ -85,17 +81,13 @@ class MainIR extends PluginBase implements Listener {
     private $freeze = [];
    /** @var array $vanish */
     private $vanish = [];
-   /** @var array */
-    private $config;
-	
+  
   public function onLoad(): void{
    $this->getLogger()->info(IR::AQUA . "Loading all resources and codes on Implactor plugin...");
   }
 	
   public function onEnable(): void{
   	$this->getLogger()->info(IR::GREEN . "Implactor plugin is now online!");
-	$this->saveDefaultConfig();
-        $this->registerEvents();
          $this->getServer()->getScheduler()->scheduleRepeatingTask(new HubParticle($this, $this), 20);
          $this->getServer()->getPluginManager()->registerEvents($this, $this);
          $this->getServer()->getPluginManager()->registerEvents(new AntiAdvertising($this), $this);
@@ -109,43 +101,6 @@ class MainIR extends PluginBase implements Listener {
           $this->getServer()->shutdown();
         }
         
-        public function registerEvents(): void{
-        $this->getServer()->getPluginManager()->registerEvents($this, $this);
-        if(is_dir($this->getServer()->getPluginPath() . "PureChat")){
-            $this->getServer()->getPluginManager()->registerEvents(new GroupChangerTask($this), $this);
-        }
-        elseif(is_dir($this->getServer()->getPluginPath() . "EssentialsPE")) {
-            $this->getServer()->getPluginManager()->registerEvents(new NickChangerTask($this), $this);
-        }
-    }
-    
-        public function translateColors($symbol, $message){
-        $message = str_replace($symbol."0", IR::BLACK, $message);
-        $message = str_replace($symbol."1", IR::DARK_BLUE, $message);
-        $message = str_replace($symbol."2", IR::DARK_GREEN, $message);
-        $message = str_replace($symbol."3", IR::DARK_AQUA, $message);
-        $message = str_replace($symbol."4", IR::DARK_RED, $message);
-        $message = str_replace($symbol."5", IR::DARK_PURPLE, $message);
-        $message = str_replace($symbol."6", IR::GOLD, $message);
-        $message = str_replace($symbol."7", IR::GRAY, $message);
-        $message = str_replace($symbol."8", IR::DARK_GRAY, $message);
-        $message = str_replace($symbol."9", IR::BLUE, $message);
-        $message = str_replace($symbol."a", IR::GREEN, $message);
-        $message = str_replace($symbol."b", IR::AQUA, $message);
-        $message = str_replace($symbol."c", IR::RED, $message);
-        $message = str_replace($symbol."d", IR::LIGHT_PURPLE, $message);
-        $message = str_replace($symbol."e", IR::YELLOW, $message);
-        $message = str_replace($symbol."f", IR::WHITE, $message);
-	
-        $message = str_replace($symbol."k", IR::OBFUSCATED, $message);
-        $message = str_replace($symbol."l", IR::BOLD, $message);
-        $message = str_replace($symbol."m", IR::STRIKETHROUGH, $message);
-        $message = str_replace($symbol."n", IR::UNDERLINE, $message);
-        $message = str_replace($symbol."o", IR::ITALIC, $message);
-        $message = str_replace($symbol."r", IR::RESET, $message);
-        return $message;
-    }
-          
          public function onPlayerLogin(PlayerLoginEvent $ev): void{
           $ev->getPlayer()->teleport($this->getServer()->getDefaultLevel()->getSafeSpawn());
 	}
@@ -165,11 +120,6 @@ class MainIR extends PluginBase implements Listener {
              $player = $ev->getPlayer();
              $ev->setJoinMessage("§8[§a+§8] §a{$player->getName()}");
              $player->getLevel()->addSound(new EndermanTeleportSound($player));
-             
-              $config = $this->getConfig()->getAll();
-              if($config["Nametag"]["Enabled"] === true) {
-              $this->getServer()->getScheduler()->scheduleDelayedTask(new HealthTask($this, $player), 1);
-       }
    }
          
           public function onHit(EntityDamageEvent $ev): void{
@@ -220,7 +170,7 @@ class MainIR extends PluginBase implements Listener {
         $npc = new DeathHumanEntityTask($player->getLevel(), $nbt);
         $npc->getDataPropertyManager()->setBlockPos(DeathHumanEntityTask::DATA_PLAYER_BED_POSITION, new Vector3($player->getX(), $player->getY(), $player->getZ()));
         $npc->setPlayerFlag(DeathHumanEntityTask::DATA_PLAYER_FLAG_SLEEP, true);
-        $npc->setNameTag("§7[§cDead§7] " .$player->getName(). "");
+        $npc->setNameTag("§7[§cDead§7]§r\n §8" .$player->getName(). "");
         $npc->setNameTagAlwaysVisible(false);
         $npc->spawnToAll();
         $this->getServer()->getScheduler()->scheduleDelayedTask(new DeathHumanClearEntityTask($this, $npc, $player), 20);
@@ -241,11 +191,6 @@ class MainIR extends PluginBase implements Listener {
                     $entity->sendMessage("§l§7(§c!§7)§r §cYou are getting hit by a player!§e §cOh no§e...");
                     $entity->getLevel()->addParticle(new FrostBloodParticle($ev->getEntity(), Block::get(57)));      
                      if($entity instanceof DeathHumanEntityTask) $ev->setCancelled(true);
-                     
-                        $config = $this->getConfig()->getAll();
-                     if($config["Nametag"]["Enabled"] === true) {
-                     $this->getServer()->getScheduler()->scheduleDelayedTask(new HealthTask($this, $entity), 1);
-                  }
               }
           }
        }
@@ -256,49 +201,8 @@ class MainIR extends PluginBase implements Listener {
             $title = "§l§cYOU ARE DEAD!";
              $subtitle = "§eRespawning...";
               $player->addTitle($title, $subtitle);
-              
-             $config = $this->getConfig()->getAll();
-          if($config["Nametag"]["Enabled"] === true) {
-            $this->getServer()->getScheduler()->scheduleDelayedTask(new HealthTask($this, $player), 1);
-            }
          }
-         
-                   public function onHeal(EntityRegainHealthEvent $ev): void{
-                   $entity = $ev->getEntity();
-                   $config = $this->getConfig()->getAll();
-                    if($config["Nametag"]["Enabled"] === true) {
-                    $this->getServer()->getScheduler()->scheduleDelayedTask(new HealthTask($this, $entity), 1);
-               }
-           }         
-           
-                    public function setHealthNametag(Player $player) {
-                   $config = $this->getConfig()->getAll();
-                  if($player instanceof Player) {
-                 $statusformat = ($config["Nametag"]["Format"]);
-              if(is_dir($this->getServer()->getPluginPath() . "PureChat")){
-                $name = $this->getServer()->getPluginManager()->getPlugin("PureChat")->getNametag($player, ($player->getLevel()->getName()));
-                $player->setNameTag($this->translateColors("&", ($name . "\n" . (str_replace("@health", $this->getHealthStatus($player), $statusformat)))));
-            }
-            elseif(is_dir($this->getServer()->getPluginPath() . "EssentialsPE")) {
-                $nick = ($this->getServer()->getPluginManager()->getPlugin("EssentialsPE")->getNewNick($player));
-                $name = ($this->translateColors("&", ($nick . "\n" . (str_replace("@health", $this->getHealthStatus($player), $statusformat)))));
-                $this->getServer()->getPluginManager()->getPlugin("EssentialsPE")->setNick($name);
-               }  else {
-                $name = $player->getName();
-                $player->setNameTag($this->translateColors("&", ($name . "\n" . (str_replace("@health", $this->getHealthStatus($player), $statusformat)))));
-              }
-           }
-        }
-  
-               public function getHealthStatus(Player $player) {
-                  $config = $this->getConfig()->getAll();
-                    $symbol = $config["Symbol"];
-                    $currenthealth = ($player->getHealth());
-                    $usedhealth = (($player->getMaxHealth()) - ($player->getHealth()));
-                   $healthstatus = (($config["Health-Color"]) . (str_repeat($symbol, $currenthealth / 2)) . IR::RESET . ($config["Used-Health-Color"]) . (str_repeat($symbol, $usedhealth / 2)));
-                    return $healthstatus;
-                 }
-                 
+       
                  public function onEntitySpawn(EntitySpawnEvent $ev){
 		           $entity = $ev->getEntity();
 		            if($entity instanceof BotHuman){
@@ -310,7 +214,7 @@ class MainIR extends PluginBase implements Listener {
 		                    $nbt = Entity::createBaseNBT($player, null, 2, 2);
 		                   $nbt->setTag($player->namedtag->getTag("Skin"));
 		                    $npc = new BotHuman($player->getLevel(), $nbt);
-		                  $npc->setNameTag($name);
+		                  $npc->setNameTag("§7[§bBot§7]§r\n §8" .$name. "");
 		                   $npc->setNameTagAlwaysVisible(true);
 		                  $npc->spawnToAll();
 		                }                 
