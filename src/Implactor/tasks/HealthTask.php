@@ -35,7 +35,7 @@ class HealthTask extends PluginTask {
         $this->player = $player;
     }
     
-    public function onRun(int $currentTick): void{
+    public function onRun($tick){
         $this->plugin = $this->getOwner();
         $this->plugin->setHealthNametag($this->player);
     }
