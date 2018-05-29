@@ -71,6 +71,9 @@ commands:
     bot:
         description: Spawn a bot human with you own current equipped skin!
         permission: implactor.bot
+    icast:
+        description: Broadcast your message to all players who online!
+        permission: implactor.broadcast
 permissions:
     implactor.*:
      default: op
@@ -131,4 +134,7 @@ permissions:
      default: op
     implactor.bot:
      description: "Allow OP staff members to spawn their own bot human"
+     default: op
+    implactor.broadcast:
+     description: "Allow OP staff members to broadcast messages"
      default: op
