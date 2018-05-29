@@ -80,9 +80,7 @@ class MainIR extends PluginBase implements Listener {
     private $freeze = [];
    /** @var array $vanish */
     private $vanish = [];
-    /** @var Size **/
-    public $size = array();
-  
+
   public function onLoad(): void{
    $this->getLogger()->info(IR::AQUA . "Loading all resources and codes on Implactor plugin...");
   }
