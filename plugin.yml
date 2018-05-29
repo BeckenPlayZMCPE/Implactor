@@ -1,5 +1,5 @@
 name: Implactor
-version: IR-1.2.3
+version: IR-1.2.3.1
 api: [3.0.0-ALPHA12]
 main: Implactor\MainIR
 author: Zadezter
