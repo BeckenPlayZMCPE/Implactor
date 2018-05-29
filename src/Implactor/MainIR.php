@@ -80,6 +80,8 @@ class MainIR extends PluginBase implements Listener {
     private $freeze = [];
    /** @var array $vanish */
     private $vanish = [];
+    /** @var Size **/
+    public $size = array();
   
   public function onLoad(): void{
    $this->getLogger()->info(IR::AQUA . "Loading all resources and codes on Implactor plugin...");
@@ -202,9 +204,13 @@ class MainIR extends PluginBase implements Listener {
             $title = "§l§cYOU ARE DEAD!";
              $subtitle = "§eRespawning...";
               $player->addTitle($title, $subtitle);
-		  $player->setHealth(40);
-                  $player->setMaxHealth(40);
-         }
+		       $player->setHealth(40);
+                  $player->setMaxHealth(40);                  
+                  if(!empty($this->size[$player->getName()])){
+                  $nomep = $this->size[$player->getName()];
+                   $player->setDataProperty(Entity::DATA_SCALE, Entity::DATA_TYPE_FLOAT, $nomep);
+                 }
+           }
        
                  public function onEntitySpawn(EntitySpawnEvent $ev){
 		           $entity = $ev->getEntity();
@@ -558,7 +564,34 @@ class MainIR extends PluginBase implements Listener {
                            }
                         }
                        }
-                      }
+                      
+                        if(strtolower(command->getName()) == "size") {
+                        	if($sender instanceof Player){
+                        if($sender->hasPermission("implactor.size")){
+                            if(isset($args[0])){
+                           if(is_numeric($args[0])){
+                           if ($args[0] >= 1 && $args[0] <= 5) {
+                            $this->size[$sender->getName()] = $args[0];
+                           $sender->setDataProperty(Entity::DATA_SCALE, Entity::DATA_TYPE_FLOAT, $args[0]);
+                          $sender->sendMessage("§8(§6!§8)§r §aYou have changed the size to §f, §e" .$args[0]." ");
+                         }elseif($args[0] == "reset"){
+                    if(!empty($this->size[$player->getName()])){
+                        unset($this->size[$player->getName()]);
+                        $sender->setDataProperty(Entity::DATA_SCALE, Entity::DATA_TYPE_FLOAT, 1.0);
+                        $sender->sendMessage("§8(§!!§8)§r §aYou have returned to normal size!");
+                    }else{
+                        $sender->sendMessage("§8(§6!§8)§r §cUse §f/size §e<0.5-5 | reset> §ccommand!");
+                    }
+                }else{
+                    $sender->sendMessage("§8(§c!§8)§r §cSize must be between §a0.5 §cand §a5");
+                    return true;
                      }
-                    
+                  }
+                 }
+              }
+             }
+           }
+         }
+      }
+                      
   
