@@ -115,6 +115,8 @@ class MainIR extends PluginBase implements Listener {
 	     public function onPlayerJoin(PlayerJoinEvent $ev): void{
              $player = $ev->getPlayer();
              $ev->setJoinMessage("§8[§a+§8] §a{$player->getName()}");
+             $player->setHealth(40);
+             $player->setMaxHealth(40);
              $player->getLevel()->addSound(new EndermanTeleportSound($player));
    }
          
@@ -197,6 +199,8 @@ class MainIR extends PluginBase implements Listener {
             $title = "§l§cYOU ARE DEAD!";
              $subtitle = "§eRespawning...";
               $player->addTitle($title, $subtitle);
+		  $player->setHealth(40);
+                  $player->setMaxHealth(40);
          }
        
                  public function onEntitySpawn(EntitySpawnEvent $ev){
@@ -212,6 +216,8 @@ class MainIR extends PluginBase implements Listener {
 		                    $npc = new BotHuman($player->getLevel(), $nbt);
 		                  $npc->setNameTag("§7[§bBot§7]§r\n §8" .$name. "");
 		                   $npc->setNameTagAlwaysVisible(true);
+				     $npc->setHealth(200);
+				     $npc->setMaxHealth(200);
 		                  $npc->spawnToAll();
 		                }                 
         
@@ -389,8 +395,8 @@ class MainIR extends PluginBase implements Listener {
                                      if(strtolower($command->getName()) == "heal") {
 					     if($sender instanceof Player){
                                      if($sender->hasPermission("implactor.heal")){                                     	
-                                     	$sender->setHealth(20);
-                                         $sender->setMaxHealth(20);
+                                     	$sender->setHealth(40);
+                                         $sender->setMaxHealth(40);
                                          $sender->sendMessage("§aYour life points has been fully §ehealed!");
                                           return true;
                                      }
