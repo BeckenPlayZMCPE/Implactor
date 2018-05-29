@@ -231,7 +231,7 @@ class MainIR extends PluginBase implements Listener {
 		                  $npc->spawnToAll();
 		                }       
 	
-                              public function onPlayerChat(PlayerChatEvent $ev){
+                              public function onPlayerChat(PlayerChatEvent $ev): void{
                               $config = new Config($this->getDataFolder() . "bot.yml", Config::YAML);
                               if($config->get("maths")){
                               $msg = $ev->getMessage();
