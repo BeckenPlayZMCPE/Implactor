@@ -565,7 +565,7 @@ class MainIR extends PluginBase implements Listener {
                         }
                        }
                       
-                        if(strtolower(command->getName()) == "size") {
+                        if(strtolower($command->getName()) == "size") {
                         	if($sender instanceof Player){
                         if($sender->hasPermission("implactor.size")){
                             if(isset($args[0])){
